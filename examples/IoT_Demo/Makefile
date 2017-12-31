@@ -23,7 +23,8 @@ GEN_BINS= eagle.app.v6.bin
 SPECIAL_MKTARGETS=$(APP_MKTARGETS)
 SUBDIRS=    \
 	user    \
-	driver
+	driver \
+	esp-gdbstub
 
 endif # } PDIR
 
@@ -48,9 +49,11 @@ endif
 
 COMPONENTS_eagle.app.v6 = \
 	user/libuser.a  \
-	driver/libdriver.a
+	driver/libdriver.a \
+	esp-gdbstub/libgdbstub.a
 
 LINKFLAGS_eagle.app.v6 = \
+	-Xlinker -Map=$(ODIR)/app.map \
 	-L../lib        \
 	-nostdlib	\
     -T$(LD_FILE)   \
@@ -95,7 +98,7 @@ DEPENDS_eagle.app.v6 = \
 #	-DTXRX_TXBUF_DEBUG
 #	-DTXRX_RXBUF_DEBUG
 #	-DWLAN_CONFIG_CCX
-CONFIGURATION_DEFINES =	-DICACHE_FLASH
+CONFIGURATION_DEFINES =	-DICACHE_FLASH -DGDBSTUB_FREERTOS=0
 
 DEFINES +=				\
 	$(UNIVERSAL_TARGET_DEFINES)	\
@@ -118,7 +121,7 @@ DDEFINES +=				\
 # Required for each makefile to inherit from the parent
 #
 
-INCLUDES := $(INCLUDES) -I $(PDIR)include
+INCLUDES := $(INCLUDES) -I $(PDIR)include -I $(PDIR)esp-gdbstub
 PDIR := ../$(PDIR)
 sinclude $(PDIR)Makefile
 

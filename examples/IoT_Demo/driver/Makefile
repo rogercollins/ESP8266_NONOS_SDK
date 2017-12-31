@@ -12,6 +12,8 @@
 #     a generated lib/image xxx.a ()
 #
 ifndef PDIR
+VPATH = ../../driver_lib/driver
+CSRCS = $(wildcard *.c) uart.c memcpy.c
 GEN_LIBS = libdriver.a
 endif
 

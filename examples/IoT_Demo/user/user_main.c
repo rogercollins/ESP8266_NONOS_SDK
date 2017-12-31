@@ -34,6 +34,8 @@
 #include "user_esp_platform.h"
 #endif
 
+#include "gdbstub.h"
+
 /******************************************************************************
  * FunctionName : user_rf_cal_sector_set
  * Description  : SDK just reversed 4 sectors, used for rf init data and paramters.
@@ -101,7 +103,11 @@ user_rf_pre_init(void)
 void ICACHE_FLASH_ATTR
 user_init(void)
 {
+    uart_init(115200, 115200);
+    os_delay_us(1000);
     os_printf("SDK version:%s\n", system_get_sdk_version());
+
+    gdbstub_init();
 
 #if ESP_PLATFORM
     /*Initialization of the peripheral drivers*/

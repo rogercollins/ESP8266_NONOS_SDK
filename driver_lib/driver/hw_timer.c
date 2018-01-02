@@ -114,7 +114,7 @@ void ICACHE_FLASH_ATTR hw_timer_init(FRC1_TIMER_SOURCE_TYPE source_type, u8 req)
     if (source_type == NMI_SOURCE) {
         ETS_FRC_TIMER1_NMI_INTR_ATTACH(hw_timer_isr_cb);
     } else {
-        ETS_FRC_TIMER1_INTR_ATTACH(hw_timer_isr_cb, NULL);
+        ETS_FRC_TIMER1_INTR_ATTACH((ets_isr_t)hw_timer_isr_cb, NULL);
     }
 
     TM1_EDGE_INT_ENABLE();

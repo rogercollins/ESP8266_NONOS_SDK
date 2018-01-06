@@ -297,8 +297,8 @@ else
         endif
     endif
 
-	@mv eagle.app.flash.bin ../bin/upgrade/$(BIN_NAME).bin
-	@rm eagle.app.v6.*
+	mv eagle.app.flash.bin ../bin/upgrade/$(BIN_NAME).bin
+	rm eagle.app.v6.*
 	@echo "Generate $(BIN_NAME).bin successully in folder bin/upgrade."
 	@echo "boot.bin------------>0x00000"
 	@echo "$(BIN_NAME).bin--->$(addr)"
@@ -314,7 +314,11 @@ endif
 all:	.subdirs $(OBJS) $(OLIBS) $(OIMAGES) $(OBINS) $(SPECIAL_MKTARGETS)
 
 clean:
-	$(foreach d, $(SUBDIRS), $(MAKE) -C $(d) clean;)
+	@for d in $(SUBDIRS) ; \
+	do \
+		echo $(MAKE) -C $$d clean ; \
+		$(MAKE) -C $$d clean ; \
+	done
 	$(RM) -r $(ODIR)/$(TARGET)/$(FLAVOR)
 
 clobber: $(SPECIAL_CLOBBER)
@@ -322,7 +326,11 @@ clobber: $(SPECIAL_CLOBBER)
 	$(RM) -r $(ODIR)
 
 .subdirs:
-	@set -e; $(foreach d, $(SUBDIRS), $(MAKE) -C $(d);)
+	@set -e; for d in $(SUBDIRS) ; \
+	do \
+		echo $(MAKE) -C $$d; \
+		$(MAKE) -C $$d; \
+	done
 
 #.subdirs:
 #	$(foreach d, $(SUBDIRS), $(MAKE) -C $(d))

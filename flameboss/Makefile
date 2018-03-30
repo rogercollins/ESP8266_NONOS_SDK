@@ -35,6 +35,14 @@ endif # } PDIR
 APPDIR = .
 LDDIR = ../ld
 
+ifeq ($(APP), 1)
+APP_ADDR=0x1000
+APP_PATH=../bin/upgrade/user1.2048.new.3.bin
+else
+APP_ADDR=0x81000
+APP_PATH=../bin/upgrade/user2.2048.new.3.bin
+endif
+
 CCFLAGS += -Og
 
 TARGET_LDFLAGS =		\
@@ -172,6 +180,4 @@ program_once:
 		-ca 0x1FE000 -cf ../bin/blank.bin
 
 program:
-	time esptool -bz 16M -cp $(ESP_PORT) \
-		-ca 0x1000 -cf ../bin/upgrade/user1.2048.new.3.bin
-
+	time esptool -bz 16M -cp $(ESP_PORT) -ca $(APP_ADDR) -cf $(APP_PATH)
